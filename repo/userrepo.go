@@ -1,5 +1,3 @@
-//go:generate mockgen -package repo -source=userrepo.go -destination userrepo_mock.go
-
 package repo
 
 import (
@@ -8,26 +6,19 @@ import (
 	"github.com/ubiqueworks/go-solid-tutorial/domain"
 )
 
-type UserRepository interface {
-	Create(u *domain.User) error
-	DeleteByID(id string) error
-	GetByID(id string) (*domain.User, error)
-	List() ([]domain.User, error)
-}
-
-func NewUserRepository() UserRepository {
-	return &userRepository{
+func NewUserRepository() *UserRepository {
+	return &UserRepository{
 		db:   make(map[string]domain.User),
 		lock: &sync.RWMutex{},
 	}
 }
 
-type userRepository struct {
+type UserRepository struct {
 	db   map[string]domain.User
 	lock *sync.RWMutex
 }
 
-func (r userRepository) Create(u *domain.User) error {
+func (r UserRepository) Create(u *domain.User) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -35,7 +26,7 @@ func (r userRepository) Create(u *domain.User) error {
 	return nil
 }
 
-func (r userRepository) DeleteByID(id string) error {
+func (r UserRepository) DeleteByID(id string) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -47,7 +38,7 @@ func (r userRepository) DeleteByID(id string) error {
 	return nil
 }
 
-func (r userRepository) GetByID(id string) (*domain.User, error) {
+func (r UserRepository) GetByID(id string) (*domain.User, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 
@@ -57,7 +48,7 @@ func (r userRepository) GetByID(id string) (*domain.User, error) {
 	return nil, ErrNotFound
 }
 
-func (r userRepository) List() ([]domain.User, error) {
+func (r UserRepository) List() ([]domain.User, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 

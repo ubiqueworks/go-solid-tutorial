@@ -3,6 +3,6 @@ package repo
 import "errors"
 
 var (
-	ErrNotFound = errors.New("user not found")
+	ErrNotFound = errors.New("resource not found")
 )
 

@@ -5,26 +5,26 @@ package service
 import (
 	"github.com/google/uuid"
 	"github.com/ubiqueworks/go-solid-tutorial/domain"
-	"github.com/ubiqueworks/go-solid-tutorial/repo"
 )
 
-type Service interface {
-	CreateUser(u *domain.User) error
-	DeleteUser(userId string) error
-	ListUsers() ([]domain.User, error)
+type UserRepository interface {
+	Create(u *domain.User) error
+	DeleteByID(id string) error
+	GetByID(id string) (*domain.User, error)
+	List() ([]domain.User, error)
 }
 
-func New(userRepo repo.UserRepository) (Service, error) {
-	return &serviceImpl{
+func New(userRepo UserRepository) (*Service, error) {
+	return &Service{
 		userRepo: userRepo,
 	}, nil
 }
 
-type serviceImpl struct {
-	userRepo repo.UserRepository
+type Service struct {
+	userRepo UserRepository
 }
 
-func (s serviceImpl) CreateUser(u *domain.User) error {
+func (s Service) CreateUser(u *domain.User) error {
 	if u == nil {
 		return ErrInvalidData
 	}
@@ -40,7 +40,7 @@ func (s serviceImpl) CreateUser(u *domain.User) error {
 	return nil
 }
 
-func (s serviceImpl) DeleteUser(id string) error {
+func (s Service) DeleteUser(id string) error {
 	uid, err := uuid.Parse(id)
 	if err != nil {
 		return ErrInvalidData
@@ -52,6 +52,6 @@ func (s serviceImpl) DeleteUser(id string) error {
 	return nil
 }
 
-func (s serviceImpl) ListUsers() ([]domain.User, error) {
+func (s Service) ListUsers() ([]domain.User, error) {
 	return s.userRepo.List()
 }

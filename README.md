@@ -10,7 +10,7 @@ For business reasons, the **create** and **delete** functionalities will only be
 interface via RPC while the **list** of users will be publicly available via HTTP 
 
 ## Dependency graph
-![Dependency graph](https://github.com/ubiqueworks/go-solid-tutorial/raw/0-flawed/depgraph.png "Dependency graph")
+![Dependency graph](https://github.com/ubiqueworks/go-solid-tutorial/raw/1-fix-solid/depgraph.png "Dependency graph")
 
 ## Implementations
 Each branch contains the implementation for the above scenario and fixes issues by applying SOLID principles.

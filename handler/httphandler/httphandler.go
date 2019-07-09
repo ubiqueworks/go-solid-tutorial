@@ -1,3 +1,5 @@
+//go:generate mockgen -package httphandler -source=httphandler.go -destination httphandler_mock.go
+
 package httphandler
 
 import (
@@ -9,9 +11,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/caarlos0/env"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/ubiqueworks/go-solid-tutorial/service"
+	"github.com/ubiqueworks/go-solid-tutorial/domain"
 )
 
 const (
@@ -19,21 +22,51 @@ const (
 	ContentType = "Content-Type"
 )
 
+type config struct {
+	BindAddr string `env:"BIND_ADDR" envDefault:"0.0.0.0" required:"true"`
+	Port     int    `env:"HTTP_PORT" envDefault:"8000" required:"true"`
+}
+
+func (c config) Validate() error {
+	if c.BindAddr == "" {
+		return fmt.Errorf("missing required HTTP_ADDR")
+	}
+
+	if c.Port < 1 || c.Port > 65535 {
+		return fmt.Errorf("invalid HTTP_PORT: %d", c.Port)
+	}
+
+	return nil
+}
+
 type httpError struct {
 	Error string `json:"error"`
 }
 
-func New(s service.Service, bindAddr string, bindPort int) *HttpHandler {
+type Service interface {
+	ListUsers() ([]domain.User, error)
+}
+
+func New(s Service) (*HttpHandler, error) {
+	var cfg config
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := cfg.Validate(); err != nil {
+		log.Fatal(err)
+	}
+
 	h := &HttpHandler{
-		addr:    fmt.Sprintf("%s:%d", bindAddr, bindPort),
+		addr:    fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
 		service: s,
 	}
-	return h
+	return h, nil
 }
 
 type HttpHandler struct {
 	addr    string
-	service service.Service
+	service Service
 }
 
 func (h HttpHandler) Bootstrap() (shutdownFn func() error, err error) {
@@ -84,15 +117,6 @@ func (h HttpHandler) createRouter() (chi.Router, error) {
 
 	return r, nil
 }
-
-// func (h HttpHandler) handleUsersGet(w http.ResponseWriter, r *http.Request) {
-// 	userId := chi.URLParam(r, "userId")
-// 	if _, err := uuid.Parse(userId); err != nil {
-// 		_ = sendError(w, 400, err)
-// 		return
-// 	}
-//
-// }
 
 func (h HttpHandler) handleUsersQuery(w http.ResponseWriter, r *http.Request) {
 	users, err := h.service.ListUsers()

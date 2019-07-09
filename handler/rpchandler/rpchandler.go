@@ -1,3 +1,5 @@
+//go:generate mockgen -package rpchandler -source=rpchandler.go -destination rpchandler_mock.go
+
 package rpchandler
 
 import (
@@ -6,23 +8,54 @@ import (
 	"log"
 	"net"
 
+	"github.com/caarlos0/env"
 	"github.com/ubiqueworks/go-solid-tutorial/domain"
 	"github.com/ubiqueworks/go-solid-tutorial/pb"
-	"github.com/ubiqueworks/go-solid-tutorial/service"
 	"google.golang.org/grpc"
 )
 
-func New(s service.Service, bindAddr string, bindPort int) *RpcHandler {
+type config struct {
+	BindAddr string `env:"BIND_ADDR" envDefault:"0.0.0.0" required:"true"`
+	Port     int    `env:"RPC_PORT" envDefault:"9000" required:"true"`
+}
+
+func (c config) Validate() error {
+	if c.BindAddr == "" {
+		return fmt.Errorf("missing required HTTP_ADDR")
+	}
+
+	if c.Port < 1 || c.Port > 65535 {
+		return fmt.Errorf("invalid RPC_PORT: %d", c.Port)
+	}
+
+	return nil
+}
+
+type Service interface {
+	CreateUser(u *domain.User) error
+	DeleteUser(userId string) error
+}
+
+func New(s Service) (*RpcHandler, error) {
+	var cfg config
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := cfg.Validate(); err != nil {
+		log.Fatal(err)
+	}
+
 	h := &RpcHandler{
-		addr:    fmt.Sprintf("%s:%d", bindAddr, bindPort),
+		addr:    fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
 		service: s,
 	}
-	return h
+	return h, nil
 }
 
 type RpcHandler struct {
 	addr    string
-	service service.Service
+	service Service
 }
 
 func (h RpcHandler) Bootstrap() (shutdownFn func() error, err error) {
