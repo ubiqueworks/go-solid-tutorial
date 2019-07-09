@@ -10,13 +10,14 @@ For business reasons, the **create** and **delete** functionalities will only be
 interface via RPC while the **list** of users will be publicly available via HTTP 
 
 ## Implementations
-STEP 0 - Flawed implementation
+Each branch contains the implementation for the above scenario and fixes issues by applying SOLID principles.
 
-STEP 1 - Fix interfaces/dependency graph
-
-STEP 2 - Fix models/domain per layer
-
-STEP 3 - Fix configuration
+| Branch | Description |
+|--------|-------------|
+| [0-flawed](https://github.com/ubiqueworks/go-solid-tutorial/tree/0-flawed)| Flawed implementation |
+| [1-fix-solid](https://github.com/ubiqueworks/go-solid-tutorial/tree/1-solid)| Fix code with SOLID principles |
+| [2-fix-model](https://github.com/ubiqueworks/go-solid-tutorial/tree/2-fix-model)| (Extra) Fixed model |
+| [3-fix-config](https://github.com/ubiqueworks/go-solid-tutorial/tree/3-fix-config)| (Extra) Fixed configuration | 
 
 ## Guiding principles
 
