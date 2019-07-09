@@ -21,7 +21,6 @@ Each branch contains the implementation for the above scenario and fixes issues 
 | [1-fix-solid](https://github.com/ubiqueworks/go-solid-tutorial/tree/1-fix-solid)| Fix code with SOLID principles |
 | [2-fix-model](https://github.com/ubiqueworks/go-solid-tutorial/tree/2-fix-model)| Fixed model |
 
-1-fix-solid
 ## Guiding principles
 
 *Two types are substitutable if they exhibit behaviour such that the caller is unable to tell the difference - Liskov principle*
