@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package pb;
+
+service UserAdmin {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserReply) {}
+    rpc DeleteUser (DeleteUserRequest) returns (EmptyReply) {}
+}
+
+message EmptyReply {
+
+}
+
+message CreateUserRequest {
+    string name = 1;
+}
+
+message CreateUserReply {
+    User user = 1;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+}
