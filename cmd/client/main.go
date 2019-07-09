@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -29,6 +28,10 @@ func main() {
 					Name:  "name",
 					Usage: "Name of the user to create",
 				},
+				cli.StringFlag{
+					Name:  "password",
+					Usage: "Password of the user to create",
+				},
 			},
 		},
 		{
@@ -44,18 +47,6 @@ func main() {
 				cli.StringFlag{
 					Name:  "id",
 					Usage: "ID of the user to delete",
-				},
-			},
-		},
-		{
-			Name:   "list",
-			Usage:  "list all users",
-			Action: listUsers,
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:  "addr",
-					Value: "0.0.0.0:9000",
-					Usage: "Server RPC address",
 				},
 			},
 		},
@@ -77,6 +68,7 @@ func createUser(c *cli.Context) error {
 	client := pb.NewUserAdminClient(conn)
 	reply, err := client.CreateUser(context.Background(), &pb.CreateUserRequest{
 		Name: c.String("name"),
+		Password: c.String("password"),
 	})
 
 	if err != nil {
@@ -105,11 +97,5 @@ func deleteUser(c *cli.Context) error {
 	}
 
 	log.Printf(`User with ID "%s" deleted`, userID)
-	return nil
-}
-
-func listUsers(c *cli.Context) error {
-	fmt.Println(c.String("addr"))
-
 	return nil
 }

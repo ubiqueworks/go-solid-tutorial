@@ -91,6 +91,7 @@ func (h RpcHandler) Bootstrap() (shutdownFn func() error, err error) {
 func (h RpcHandler) CreateUser(ctx context.Context, r *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
 	user := &domain.User{
 		Name: r.Name,
+		Password: r.Password,
 	}
 	if err := h.service.CreateUser(user); err != nil {
 		return nil, err
