@@ -17,7 +17,6 @@ Each branch contains the implementation for the above scenario and fixes issues 
 | [0-flawed](https://github.com/ubiqueworks/go-solid-tutorial/tree/0-flawed)| Flawed implementation |
 | [1-fix-solid](https://github.com/ubiqueworks/go-solid-tutorial/tree/1-solid)| Fix code with SOLID principles |
 | [2-fix-model](https://github.com/ubiqueworks/go-solid-tutorial/tree/2-fix-model)| (Extra) Fixed model |
-| [3-fix-config](https://github.com/ubiqueworks/go-solid-tutorial/tree/3-fix-config)| (Extra) Fixed configuration | 
 
 ## Guiding principles
 
