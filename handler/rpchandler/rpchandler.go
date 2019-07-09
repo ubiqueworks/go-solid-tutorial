@@ -6,9 +6,9 @@ import (
 	"log"
 	"net"
 
-	"github.com/ubiqueworks/go-interface-usage/domain"
-	"github.com/ubiqueworks/go-interface-usage/pb"
-	"github.com/ubiqueworks/go-interface-usage/service"
+	"github.com/ubiqueworks/go-solid-tutorial/domain"
+	"github.com/ubiqueworks/go-solid-tutorial/pb"
+	"github.com/ubiqueworks/go-solid-tutorial/service"
 	"google.golang.org/grpc"
 )
 

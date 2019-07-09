@@ -4,8 +4,8 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"github.com/ubiqueworks/go-interface-usage/domain"
-	"github.com/ubiqueworks/go-interface-usage/repo"
+	"github.com/ubiqueworks/go-solid-tutorial/domain"
+	"github.com/ubiqueworks/go-solid-tutorial/repo"
 )
 
 type Service interface {

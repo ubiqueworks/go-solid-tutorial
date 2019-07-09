@@ -6,9 +6,6 @@ PROTOC := $(shell which protoc)
 PROTO_SOURCES := $(shell find . -type f -name '*.proto' -not -path "./vendor/*")
 PROTO_FILES := $(patsubst %.proto,%.pb.go,$(PROTO_SOURCES))
 
-ensure-goda:
-	@GO111MODULE=off $(GO) get -u github.com/loov/goda
-
 gogen:
 	@$(GO) generate $(shell go list ./... | grep -v /vendor/)
 
@@ -18,10 +15,9 @@ golint:
 govet:
 	@$(GO) vet $(shell go list ./... | grep -v /vendor/)
 
-#depgraph: ensure-goda
 depgraph:
-	@goda graph -cluster -short github.com/ubiqueworks/go-interface-usage/cmd | dot -Tpng -o depgraph.png
-	@goda graph -cluster -short github.com/ubiqueworks/go-interface-usage/cmd | dot -Tsvg -o depgraph.svg
+	@godepgraph -nostdlib -novendor -o github.com/ubiqueworks/go-solid-tutorial github.com/ubiqueworks/go-solid-tutorial/cmd/server | dot -Tpng -o depgraph.png
+	@godepgraph -nostdlib -novendor -o github.com/ubiqueworks/go-solid-tutorial github.com/ubiqueworks/go-solid-tutorial/cmd/server | dot -Tsvg -o depgraph.svg
 
 $(PROTO_FILES): %.pb.go: %.proto
 

@@ -11,7 +11,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/ubiqueworks/go-interface-usage/service"
+	"github.com/ubiqueworks/go-solid-tutorial/service"
 )
 
 const (

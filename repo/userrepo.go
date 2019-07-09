@@ -5,7 +5,7 @@ package repo
 import (
 	"sync"
 
-	"github.com/ubiqueworks/go-interface-usage/domain"
+	"github.com/ubiqueworks/go-solid-tutorial/domain"
 )
 
 type UserRepository interface {
@@ -61,7 +61,7 @@ func (r userRepository) List() ([]domain.User, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 
-	users := make([]domain.User, len(r.db))
+	users := make([]domain.User, 0, len(r.db))
 	for _, user := range r.db {
 		users = append(users, user)
 	}

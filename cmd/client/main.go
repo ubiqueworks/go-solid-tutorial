@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/ubiqueworks/go-interface-usage/pb"
+	"github.com/ubiqueworks/go-solid-tutorial/pb"
 	"github.com/urfave/cli"
 	"google.golang.org/grpc"
 )
@@ -88,17 +88,23 @@ func createUser(c *cli.Context) error {
 }
 
 func deleteUser(c *cli.Context) error {
-	fmt.Println(c.String("addr"))
-	fmt.Println(c.String("id"))
+	conn, err := grpc.Dial(c.String("addr"), grpc.WithInsecure())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
 
-	// conn, err := grpc.Dial("0.0.0.0:9000", grpc.WithInsecure())
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer conn.Close()
-	//
-	// cli := pb.NewUserAdminClient(conn)
+	userID := c.String("id")
 
+	client := pb.NewUserAdminClient(conn)
+	_, err = client.DeleteUser(context.Background(), &pb.DeleteUserRequest{
+		Id: userID,
+	})
+	if err != nil {
+		return cli.NewExitError(err, 1)
+	}
+
+	log.Printf(`User with ID "%s" deleted`, userID)
 	return nil
 }
 

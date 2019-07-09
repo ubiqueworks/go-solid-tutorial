@@ -8,11 +8,11 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/caarlos0/env/v6"
-	"github.com/ubiqueworks/go-interface-usage/repo"
-	"github.com/ubiqueworks/go-interface-usage/service"
-	"github.com/ubiqueworks/go-interface-usage/handler/httphandler"
-	"github.com/ubiqueworks/go-interface-usage/handler/rpchandler"
+	"github.com/caarlos0/env"
+	"github.com/ubiqueworks/go-solid-tutorial/handler/httphandler"
+	"github.com/ubiqueworks/go-solid-tutorial/handler/rpchandler"
+	"github.com/ubiqueworks/go-solid-tutorial/repo"
+	"github.com/ubiqueworks/go-solid-tutorial/service"
 )
 
 type config struct {
@@ -85,7 +85,6 @@ func main() {
 		<-shutdownCh
 		_ = shutdownHttp()
 	}()
-
 
 	// initialize RPC handler
 	wg.Add(1)

@@ -6,7 +6,7 @@ package repo
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	domain "github.com/ubiqueworks/go-interface-usage/domain"
+	domain "github.com/ubiqueworks/go-solid-tutorial/domain"
 	reflect "reflect"
 )
 
