@@ -39,6 +39,11 @@ func (c config) Validate() error {
 	return nil
 }
 
+type httpUser struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+}
+
 type httpError struct {
 	Error string `json:"error"`
 }
@@ -123,6 +128,14 @@ func (h HttpHandler) handleUsersQuery(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		_ = sendError(w, 500, err)
 		return
+	}
+
+	httpUsers := make([]httpUser, 0, len(users))
+	for _, u := range users {
+		httpUsers = append(httpUsers, httpUser{
+			ID: u.ID,
+			Name: u.Name,
+		})
 	}
 	_ = sendJson(w, 200, users)
 }
