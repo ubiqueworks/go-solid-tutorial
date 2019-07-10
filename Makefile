@@ -25,9 +25,9 @@ $(PROTO_FILES): %.pb.go: %.proto
 protos: $(PROTO_FILES)
 
 run-client:
-	@$(GO) run cmd/client/main.go --name george
-	@$(GO) run cmd/client/main.go --name matteo
-	@$(GO) run cmd/client/main.go --name john
+	@$(GO) run cmd/client/main.go create --name george
+	@$(GO) run cmd/client/main.go create --name matteo
+	@$(GO) run cmd/client/main.go create --name john
 
 run-server:
 	@$(GO) run cmd/server/main.go
